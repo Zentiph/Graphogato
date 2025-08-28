@@ -37,6 +37,9 @@ public final class Constant implements Expression {
 
    @Override
    public String toString() {
+      // if the number can be represented as an int, do that
+      if ((double) Math.floor(value) == value)
+         return Integer.toString((int) value);
       return Double.toString(value);
    }
 }
