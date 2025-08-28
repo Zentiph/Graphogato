@@ -1,13 +1,20 @@
 package graphogato.symbolics.expressions;
 
+import graphogato.symbolics.EvaluationContext;
+import graphogato.symbolics.Symbolics;
+
 /**
  * A binary operator that acts on two expressions.
  *
  * @author Gavin Borne
  */
 public final class BinaryOperator implements Expression {
+   /** The binary operator being used. */
    public final Operator operator;
-   public final Expression left, right;
+   /** The expression on the left */
+   public final Expression left;
+   /** The expression on the right */
+   public final Expression right;
 
    /**
     * Create a new binary operator node.
@@ -56,8 +63,9 @@ public final class BinaryOperator implements Expression {
                new BinaryOperator(Operator.EXPONENTIATE, right, new Constant(2)));
          case EXPONENTIATE -> {
             // d/dx(u^v) = u^v * (v' * ln(u) + v * u' / u)
-            yield Constant.ZERO;
-            // TODO
+            Expression term = Symbolics.add(Symbolics.mul(rightDeriv, Symbolics.call("ln", left)),
+                  Symbolics.mul(right, Symbolics.div(leftDeriv, left)));
+            yield Symbolics.mul(this, term);
          }
       };
    }
@@ -67,7 +75,7 @@ public final class BinaryOperator implements Expression {
       Expression leftSimp = left.simplify();
       Expression rightSimp = right.simplify();
 
-      if (leftSimp instanceof Constant leftConst && rightSimp instanceof Const rightConst) {
+      if (leftSimp instanceof Constant leftConst && rightSimp instanceof Constant rightConst) {
          return new Constant(new BinaryOperator(operator, leftSimp, rightSimp).evaluate(EvaluationContext.EMPTY));
       }
 
@@ -90,7 +98,7 @@ public final class BinaryOperator implements Expression {
          case MULTIPLY:
             // 0 * x = x * 0 = 0
             if (isZero(leftSimp) || isZero(rightSimp))
-               return Constant.ZERO;
+               return Symbolics.ZERO;
             // 1 * x = x
             if (isOne(leftSimp))
                return rightSimp;
@@ -102,7 +110,7 @@ public final class BinaryOperator implements Expression {
          case DIVIDE:
             // 0 / x = 0
             if (isZero(leftSimp))
-               return Constant.ZERO;
+               return Symbolics.ZERO;
             // x / 1 = x
             if (isOne(rightSimp))
                return leftSimp;
@@ -114,13 +122,13 @@ public final class BinaryOperator implements Expression {
                return leftSimp;
             // x ^ 0 = 1
             if (isZero(rightSimp))
-               return Constant.ONE;
+               return Symbolics.ONE;
             // 1 ^ x = 1
             if (isOne(leftSimp))
-               return Constant.ONE;
+               return Symbolics.ONE;
             // 0 ^ x = 0
             if (isZero(leftSimp))
-               return Constant.ZERO;
+               return Symbolics.ZERO;
             break;
       }
 

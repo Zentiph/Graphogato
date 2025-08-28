@@ -1,12 +1,16 @@
 package graphogato.symbolics.expressions;
 
+import graphogato.symbolics.EvaluationContext;
+
 /**
  * A unary operator that acts on an expression.
  *
  * @author Gavin Borne
  */
 public final class UnaryOperator implements Expression {
+   /** The unary operator being used. */
    public final Operator operator;
+   /** The expression being affected. */
    public final Expression expression;
 
    /**
@@ -39,16 +43,11 @@ public final class UnaryOperator implements Expression {
    @Override
    public Expression simplify() {
       Expression simplified = expression.simplify();
-      if (simplified instanceof Constant constant) {
-         return new Constant(new UnaryOperator(operator, simplified).evaluate(EvaluationContext.EMPTY));
-      }
 
-      if (operator == Operator.NEGATE) {
-         if (simplified instanceof Constant constant)
-            return new Constant(-constant.value);
-         if (simplified instanceof UnaryOperator unary && unary.operator == Operator.NEGATE)
-            return unary.expression; // undo double negation
-      }
+      if (simplified instanceof Constant constant)
+         return new Constant(-constant.value);
+      if (simplified instanceof UnaryOperator unary && unary.operator == UnaryOperator.Operator.NEGATE)
+         return unary.expression;
 
       return (simplified == expression) ? this : new UnaryOperator(operator, simplified);
    }

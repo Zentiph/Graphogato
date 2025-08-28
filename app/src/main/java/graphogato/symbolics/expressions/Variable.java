@@ -1,11 +1,15 @@
 package graphogato.symbolics.expressions;
 
+import graphogato.symbolics.EvaluationContext;
+import graphogato.symbolics.Symbolics;
+
 /**
  * A symbolic variable.
  *
  * @author Gavin Borne
  */
 public final class Variable implements Expression {
+   /** The name of the variable. */
    public final String name;
 
    /**
@@ -27,7 +31,7 @@ public final class Variable implements Expression {
 
    @Override
    public Expression differentiate(String variable) {
-      return name.equals(variable) ? Constant.ONE : Constant.ZERO;
+      return name.equals(variable) ? Symbolics.ONE : Symbolics.ZERO;
    }
 
    @Override

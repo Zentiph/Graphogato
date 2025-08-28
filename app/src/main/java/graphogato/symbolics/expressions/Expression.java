@@ -1,5 +1,7 @@
 package graphogato.symbolics.expressions;
 
+import graphogato.symbolics.EvaluationContext;
+
 /**
  * Interface defining the methods required for all types of expressions.
  *

@@ -1,13 +1,14 @@
 package graphogato.symbolics.expressions;
 
+import graphogato.symbolics.EvaluationContext;
+
 /**
  * Representation of a constant value.
  *
  * @author Gavin Borne
  */
 public final class Constant implements Expression {
-   public static final Constant ZERO = new Constant(0), ONE = new Constant(1);
-
+   /** The value of the constant. */
    public final double value;
 
    /**
@@ -26,7 +27,7 @@ public final class Constant implements Expression {
 
    @Override
    public Expression differentiate(String variable) {
-      return ZERO;
+      return new Constant(0);
    }
 
    @Override

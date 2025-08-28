@@ -1,4 +1,4 @@
-package graphogato.symbolics.expressions;
+package graphogato.symbolics;
 
 import java.util.HashMap;
 import java.util.Map;
