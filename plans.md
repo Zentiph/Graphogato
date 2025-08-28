@@ -1,0 +1,1 @@
+* Change all public accessible variables to methods

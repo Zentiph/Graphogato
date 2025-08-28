@@ -6,7 +6,6 @@ import java.util.List;
 import graphogato.symbolics.Builtins;
 import graphogato.symbolics.EvaluationContext;
 import graphogato.symbolics.Function;
-import graphogato.symbolics.Symbolics;
 
 /**
  * A function call node.
@@ -43,16 +42,14 @@ public final class FunctionCall implements Expression {
       ArrayList<Double> values = new ArrayList<>(arguments.size());
       for (Expression expression : arguments)
          values.add(expression.evaluate(context));
-      return definition.evaluations.apply(values);
+      return definition.evaluator.apply(values);
    }
 
    @Override
    public Expression differentiate(String variable) {
       Function definition = Builtins.get(name);
 
-      if (definition == null)
-         definition = Symbolics.contextFallback.get().functions.get(name); // try thread-local fallback
-      if (definition == null || definition.derivative)
+      if (definition == null || definition.derivative == null)
          throw new UnsupportedOperationException("No derivative defined for function: " + name);
 
       return definition.derivative.apply(arguments, variable).simplify();

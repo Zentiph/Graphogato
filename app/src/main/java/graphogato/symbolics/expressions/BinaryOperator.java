@@ -75,7 +75,7 @@ public final class BinaryOperator implements Expression {
       Expression leftSimp = left.simplify();
       Expression rightSimp = right.simplify();
 
-      if (leftSimp instanceof Constant leftConst && rightSimp instanceof Constant rightConst) {
+      if (leftSimp instanceof Constant && rightSimp instanceof Constant) {
          return new Constant(new BinaryOperator(operator, leftSimp, rightSimp).evaluate(EvaluationContext.EMPTY));
       }
 

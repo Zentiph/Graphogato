@@ -1,8 +1,9 @@
 package graphogato.symbolics;
 
-import java.beans.Expression;
 import java.util.List;
 import java.util.function.BiFunction;
+
+import graphogato.symbolics.expressions.Expression;
 
 /**
  * A function node, with a name and parameters.

@@ -1,21 +1,32 @@
 package graphogato.symbolics;
 
+import java.util.List;
+
 import graphogato.symbolics.expressions.BinaryOperator;
 import graphogato.symbolics.expressions.Constant;
 import graphogato.symbolics.expressions.Expression;
+import graphogato.symbolics.expressions.FunctionCall;
 import graphogato.symbolics.expressions.UnaryOperator;
 
 /**
  * The main class of symbolics.
  */
 public final class Symbolics {
-   private static final ThreadLocal<EvaluationContext> contextFallback = ThreadLocal
-         .withInitial(EvaluationContext::new);
-
    /** A constant with a value of zero. */
    public static final Constant ZERO = new Constant(0);
    /** A constant with a value of one. */
    public static final Constant ONE = new Constant(1);
+
+   /**
+    * Call a function with the arguments given.
+    *
+    * @param name      - Name of the function to call
+    * @param arguments - Arguments to pass to the function
+    * @return The function call node
+    */
+   public static FunctionCall call(String name, Expression... arguments) {
+      return new FunctionCall(name, List.of(arguments));
+   }
 
    /**
     * Add two expressions.
