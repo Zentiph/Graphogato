@@ -7,19 +7,17 @@ import graphogato.symbolics.EvaluationContext;
  *
  * @author Gavin Borne
  */
-public final class UnaryOperator implements Expression {
-   /** The unary operator being used. */
-   public final Operator operator;
-   /** The expression being affected. */
-   public final Expression expression;
+public final class UnaryOperation implements Expression {
+   private final UnaryOperator operator;
+   private final Expression expression;
 
    /**
-    * Create a unary operator node with an operator and expression.
+    * Create a unary operation node with an operator and expression.
     *
-    * @param operator   - Unary operator
+    * @param operator   - Unary operator to use on the expression
     * @param expression - Expression to apply the operator on
     */
-   public UnaryOperator(Operator operator, Expression expression) {
+   public UnaryOperation(UnaryOperator operator, Expression expression) {
       this.operator = operator;
       this.expression = expression;
    }
@@ -36,7 +34,7 @@ public final class UnaryOperator implements Expression {
    public Expression differentiate(String variable) {
       Expression derivative = expression.differentiate(variable);
       return switch (operator) {
-         case NEGATE -> new UnaryOperator(Operator.NEGATE, derivative);
+         case NEGATE -> new UnaryOperation(UnaryOperator.NEGATE, derivative);
       };
    }
 
@@ -45,11 +43,11 @@ public final class UnaryOperator implements Expression {
       Expression simplified = expression.simplify();
 
       if (simplified instanceof Constant constant)
-         return new Constant(-constant.value);
-      if (simplified instanceof UnaryOperator unary && unary.operator == UnaryOperator.Operator.NEGATE)
+         return new Constant(-constant.value());
+      if (simplified instanceof UnaryOperation unary && unary.operator() == UnaryOperator.NEGATE)
          return unary.expression;
 
-      return (simplified == expression) ? this : new UnaryOperator(operator, simplified);
+      return (simplified == expression) ? this : new UnaryOperation(operator, simplified);
    }
 
    @Override
@@ -60,9 +58,27 @@ public final class UnaryOperator implements Expression {
    }
 
    /**
+    * Get this UnUnaryOperation's operator.
+    *
+    * @return This UnaryOperation's operator
+    */
+   public UnaryOperator operator() {
+      return this.operator;
+   }
+
+   /**
+    * Get this UnaryOperation's expression.
+    *
+    * @return The expression
+    */
+   public Expression expression() {
+      return this.expression;
+   }
+
+   /**
     * An enum of unary operators.
     */
-   public enum Operator {
+   public enum UnaryOperator {
       NEGATE;
    }
 }

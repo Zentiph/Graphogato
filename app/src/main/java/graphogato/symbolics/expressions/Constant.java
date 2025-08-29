@@ -8,13 +8,12 @@ import graphogato.symbolics.EvaluationContext;
  * @author Gavin Borne
  */
 public final class Constant implements Expression {
-   /** The value of the constant. */
-   public final double value;
+   private final double value;
 
    /**
-    * Create a new constant value.
+    * Create a new constant.
     *
-    * @param value - Value
+    * @param value - The value of the Constant
     */
    public Constant(double value) {
       this.value = value;
@@ -41,5 +40,24 @@ public final class Constant implements Expression {
       if ((double) Math.floor(value) == value)
          return Integer.toString((int) value);
       return Double.toString(value);
+   }
+
+   @Override
+   public boolean equals(Object other) {
+      if (this == other)
+         return true;
+      if (other instanceof Constant constant) {
+         return this.value == constant.value();
+      }
+      return false;
+   }
+
+   /**
+    * Get this constant's value.
+    *
+    * @return This constant's value
+    */
+   public double value() {
+      return this.value;
    }
 }

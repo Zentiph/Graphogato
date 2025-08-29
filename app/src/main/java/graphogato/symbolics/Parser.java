@@ -9,11 +9,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import graphogato.symbolics.expressions.BinaryOperator;
+import graphogato.symbolics.expressions.BinaryOperation;
 import graphogato.symbolics.expressions.Constant;
 import graphogato.symbolics.expressions.Expression;
 import graphogato.symbolics.expressions.FunctionCall;
-import graphogato.symbolics.expressions.UnaryOperator;
+import graphogato.symbolics.expressions.UnaryOperation;
 import graphogato.symbolics.expressions.Variable;
 
 /**
@@ -221,17 +221,17 @@ public final class Parser {
 
    private static void popOperatorAndPushNode(String operator, Deque<Expression> out) {
       if (operator.equals("NEG")) {
-         out.push(new UnaryOperator(UnaryOperator.Operator.NEGATE, out.pop()));
+         out.push(new UnaryOperation(UnaryOperation.UnaryOperator.NEGATE, out.pop()));
          return;
       }
 
       Expression second = out.pop(), first = out.pop();
-      out.push(new BinaryOperator(switch (operator) {
-         case "+" -> BinaryOperator.Operator.ADD;
-         case "-" -> BinaryOperator.Operator.SUBTRACT;
-         case "*" -> BinaryOperator.Operator.MULTIPLY;
-         case "/" -> BinaryOperator.Operator.DIVIDE;
-         case "^" -> BinaryOperator.Operator.EXPONENTIATE;
+      out.push(new BinaryOperation(switch (operator) {
+         case "+" -> BinaryOperation.BinaryOperator.ADD;
+         case "-" -> BinaryOperation.BinaryOperator.SUBTRACT;
+         case "*" -> BinaryOperation.BinaryOperator.MULTIPLY;
+         case "/" -> BinaryOperation.BinaryOperator.DIVIDE;
+         case "^" -> BinaryOperation.BinaryOperator.EXPONENTIATE;
          default -> throw new IllegalStateException("Illegal operator: " + operator);
       }, first, second));
    }

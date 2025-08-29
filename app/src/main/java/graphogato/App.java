@@ -16,7 +16,7 @@ public class App {
     public static void main(String[] args) {
         EvaluationContext context = new EvaluationContext();
         Builtins.install(context);
-        context.variables.put("x", 1.0);
+        context.variables().put("x", 1.0);
 
         Variable x = new Variable("x");
 

@@ -9,13 +9,12 @@ import graphogato.symbolics.Symbolics;
  * @author Gavin Borne
  */
 public final class Variable implements Expression {
-   /** The name of the variable. */
-   public final String name;
+   private final String name;
 
    /**
-    * Create a new variable with a name.
+    * Create a new variable.
     *
-    * @param name - Variable name
+    * @param name - The name of the variable
     */
    public Variable(String name) {
       this.name = name;
@@ -23,7 +22,7 @@ public final class Variable implements Expression {
 
    @Override
    public double evaluate(EvaluationContext context) {
-      Double value = context.variables.get(name);
+      Double value = context.variables().get(name);
       if (value == null)
          throw new IllegalStateException("No value for variable " + name);
       return value;
@@ -42,5 +41,14 @@ public final class Variable implements Expression {
    @Override
    public String toString() {
       return name;
+   }
+
+   /**
+    * Get this variable's name.
+    *
+    * @return The variable's name
+    */
+   public String name() {
+      return this.name;
    }
 }

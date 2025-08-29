@@ -1,11 +1,9 @@
-# Ignore Gradle project-specific cache directory
 .gradle
-
-# Ignore Gradle build output directory
+.project
+.classpath
 build
-
-# VSCode
 .vscode
-
-# Unneeded Java stuff
 app/bin/
+gradle/
+.settings/
+gradlew.bat

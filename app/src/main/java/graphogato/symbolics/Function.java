@@ -11,23 +11,9 @@ import graphogato.symbolics.expressions.Expression;
  * @author Gavin Borne
  */
 public final class Function {
-   /** The name of the function. */
    public final String name;
-   /**
-    * The arity of the function (the number of arguments it takes). Variadic
-    * functions have an arity of -1.
-    */
    public final int arity;
-   /**
-    * The evaluator function for this function, which takes a list of the arguments
-    * given and returns the result.
-    */
    public final java.util.function.Function<List<Double>, Double> evaluator;
-   /**
-    * The derivative function for this function, which takes a list of the
-    * arguments given, the variable to differentiate with respect to, and returns
-    * the result.
-    */
    public final BiFunction<List<Expression>, String, Expression> derivative;
 
    /**
@@ -52,5 +38,44 @@ public final class Function {
       this.arity = arity;
       this.evaluator = evaluator;
       this.derivative = derivative;
+   }
+
+   /**
+    * Get the name of the function.
+    *
+    * @return The name of the function
+    */
+   public String name() {
+      return this.name;
+   }
+
+   /**
+    * Get the arity of the function. The arity of the function is the number of
+    * arguments it takes. If the function is variadic, meaning it can take any
+    * number of arguments, its arity will be returned as -1.
+    *
+    * @return The function's arity
+    */
+   public int arity() {
+      return this.arity;
+   }
+
+   /**
+    * Get the evaluator function for this function, which takes a list of the
+    * arguments given and returns the result.
+    *
+    * @return This function's evaluator
+    */
+   public java.util.function.Function<List<Double>, Double> evaluator() {
+      return this.evaluator;
+   }
+
+   /**
+    * Get the derivative function for this function, which takes a list of the
+    * arguments given, the variable to differentiate with respect to, and returns
+    * the result.
+    */
+   public BiFunction<List<Expression>, String, Expression> derivative() {
+      return this.derivative;
    }
 }

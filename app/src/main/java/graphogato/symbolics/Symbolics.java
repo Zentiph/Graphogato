@@ -2,11 +2,11 @@ package graphogato.symbolics;
 
 import java.util.List;
 
-import graphogato.symbolics.expressions.BinaryOperator;
+import graphogato.symbolics.expressions.BinaryOperation;
 import graphogato.symbolics.expressions.Constant;
 import graphogato.symbolics.expressions.Expression;
 import graphogato.symbolics.expressions.FunctionCall;
-import graphogato.symbolics.expressions.UnaryOperator;
+import graphogato.symbolics.expressions.UnaryOperation;
 
 /**
  * The main class of symbolics.
@@ -36,7 +36,7 @@ public final class Symbolics {
     * @return Added expression
     */
    public static Expression add(Expression first, Expression second) {
-      return new BinaryOperator(BinaryOperator.Operator.ADD, first, second);
+      return new BinaryOperation(BinaryOperation.BinaryOperator.ADD, first, second);
    }
 
    /**
@@ -47,7 +47,7 @@ public final class Symbolics {
     * @return Subtracted expression
     */
    public static Expression subtract(Expression first, Expression second) {
-      return new BinaryOperator(BinaryOperator.Operator.SUBTRACT, first, second);
+      return new BinaryOperation(BinaryOperation.BinaryOperator.SUBTRACT, first, second);
    }
 
    /**
@@ -69,7 +69,7 @@ public final class Symbolics {
     * @return Multiplied expression
     */
    public static Expression multiply(Expression first, Expression second) {
-      return new BinaryOperator(BinaryOperator.Operator.MULTIPLY, first, second);
+      return new BinaryOperation(BinaryOperation.BinaryOperator.MULTIPLY, first, second);
    }
 
    /**
@@ -91,7 +91,7 @@ public final class Symbolics {
     * @return Divided expression
     */
    public static Expression divide(Expression first, Expression second) {
-      return new BinaryOperator(BinaryOperator.Operator.DIVIDE, first, second);
+      return new BinaryOperation(BinaryOperation.BinaryOperator.DIVIDE, first, second);
    }
 
    /**
@@ -113,7 +113,7 @@ public final class Symbolics {
     * @return Exponentiated expression
     */
    public static Expression exponentiate(Expression first, Expression second) {
-      return new BinaryOperator(BinaryOperator.Operator.EXPONENTIATE, first, second);
+      return new BinaryOperation(BinaryOperation.BinaryOperator.EXPONENTIATE, first, second);
    }
 
    /**
@@ -124,7 +124,7 @@ public final class Symbolics {
     * @return Exponentiated expression
     */
    public static Expression pow(Expression first, Expression second) {
-      return new BinaryOperator(BinaryOperator.Operator.EXPONENTIATE, first, second);
+      return new BinaryOperation(BinaryOperation.BinaryOperator.EXPONENTIATE, first, second);
    }
 
    /**
@@ -134,7 +134,7 @@ public final class Symbolics {
     * @return Negated expression
     */
    public static Expression negate(Expression expression) {
-      return new UnaryOperator(UnaryOperator.Operator.NEGATE, expression);
+      return new UnaryOperation(UnaryOperation.UnaryOperator.NEGATE, expression);
    }
 
    /**

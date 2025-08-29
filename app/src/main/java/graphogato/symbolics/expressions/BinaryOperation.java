@@ -8,22 +8,20 @@ import graphogato.symbolics.Symbolics;
  *
  * @author Gavin Borne
  */
-public final class BinaryOperator implements Expression {
-   /** The binary operator being used. */
-   public final Operator operator;
-   /** The expression on the left */
-   public final Expression left;
-   /** The expression on the right */
-   public final Expression right;
+public final class BinaryOperation implements Expression {
+   private final BinaryOperator operator;
+   private final Expression left;
+   private final Expression right;
 
    /**
-    * Create a new binary operator node.
+    * Create a new binary operation node, containing a binary operator and the two
+    * expressions it operates on.
     *
-    * @param operator - Binary operator
+    * @param operator - Binary operator to use on the two expressions
     * @param left     - Left expression
     * @param right    - Right expression
     */
-   public BinaryOperator(Operator operator, Expression left, Expression right) {
+   public BinaryOperation(BinaryOperator operator, Expression left, Expression right) {
       this.operator = operator;
       this.left = left;
       this.right = right;
@@ -49,18 +47,18 @@ public final class BinaryOperator implements Expression {
       Expression rightDeriv = right.differentiate(variable);
 
       return switch (operator) {
-         case ADD -> new BinaryOperator(Operator.ADD, leftDeriv, rightDeriv);
-         case SUBTRACT -> new BinaryOperator(Operator.SUBTRACT, leftDeriv, rightDeriv);
+         case ADD -> new BinaryOperation(BinaryOperator.ADD, leftDeriv, rightDeriv);
+         case SUBTRACT -> new BinaryOperation(BinaryOperator.SUBTRACT, leftDeriv, rightDeriv);
          // d/dx(u * v) = u' * v + u * v'
-         case MULTIPLY -> new BinaryOperator(Operator.ADD,
-               new BinaryOperator(Operator.MULTIPLY, leftDeriv, right),
-               new BinaryOperator(operator, left, rightDeriv));
+         case MULTIPLY -> new BinaryOperation(BinaryOperator.ADD,
+               new BinaryOperation(BinaryOperator.MULTIPLY, leftDeriv, right),
+               new BinaryOperation(operator, left, rightDeriv));
          // d/dx(u / v) = (u' * v - u * v') / v^2
-         case DIVIDE -> new BinaryOperator(Operator.DIVIDE,
-               new BinaryOperator(Operator.SUBTRACT,
-                     new BinaryOperator(Operator.MULTIPLY, leftDeriv, right),
-                     new BinaryOperator(Operator.MULTIPLY, left, rightDeriv)),
-               new BinaryOperator(Operator.EXPONENTIATE, right, new Constant(2)));
+         case DIVIDE -> new BinaryOperation(BinaryOperator.DIVIDE,
+               new BinaryOperation(BinaryOperator.SUBTRACT,
+                     new BinaryOperation(BinaryOperator.MULTIPLY, leftDeriv, right),
+                     new BinaryOperation(BinaryOperator.MULTIPLY, left, rightDeriv)),
+               new BinaryOperation(BinaryOperator.EXPONENTIATE, right, new Constant(2)));
          case EXPONENTIATE -> {
             // d/dx(u^v) = u^v * (v' * ln(u) + v * u' / u)
             Expression term = Symbolics.add(Symbolics.mul(rightDeriv, Symbolics.call("ln", left)),
@@ -76,7 +74,7 @@ public final class BinaryOperator implements Expression {
       Expression rightSimp = right.simplify();
 
       if (leftSimp instanceof Constant && rightSimp instanceof Constant) {
-         return new Constant(new BinaryOperator(operator, leftSimp, rightSimp).evaluate(EvaluationContext.EMPTY));
+         return new Constant(new BinaryOperation(operator, leftSimp, rightSimp).evaluate(EvaluationContext.EMPTY));
       }
 
       switch (operator) {
@@ -132,7 +130,7 @@ public final class BinaryOperator implements Expression {
             break;
       }
 
-      return (leftSimp == left && rightSimp == right) ? this : new BinaryOperator(operator, leftSimp, rightSimp);
+      return (leftSimp == left && rightSimp == right) ? this : new BinaryOperation(operator, leftSimp, rightSimp);
    }
 
    @Override
@@ -140,7 +138,34 @@ public final class BinaryOperator implements Expression {
       return "(" + left + " " + operatorSymbols(operator) + " " + right + ")";
    }
 
-   private static String operatorSymbols(Operator operator) {
+   /**
+    * Get this BinaryOperation's operator.
+    *
+    * @return The binary operator being used.
+    */
+   public BinaryOperator operator() {
+      return this.operator;
+   }
+
+   /**
+    * Get this BinaryOperation's left expression.
+    *
+    * @return The expression to the left of the operator
+    */
+   public Expression left() {
+      return this.left;
+   }
+
+   /**
+    * Get this BinaryOperation's right expression.
+    *
+    * @return The expression to the right of the operator
+    */
+   public Expression right() {
+      return this.right;
+   }
+
+   private static String operatorSymbols(BinaryOperator operator) {
       return switch (operator) {
          case ADD -> "+";
          case SUBTRACT -> "-";
@@ -151,17 +176,17 @@ public final class BinaryOperator implements Expression {
    }
 
    private static boolean isZero(Expression expression) {
-      return (expression instanceof Constant constant) && constant.value == 0.0;
+      return (expression instanceof Constant constant) && constant.value() == 0.0;
    }
 
    private static boolean isOne(Expression expression) {
-      return (expression instanceof Constant constant) && constant.value == 1.0;
+      return (expression instanceof Constant constant) && constant.value() == 1.0;
    }
 
    /**
     * An enum of binary operators.
     */
-   public enum Operator {
+   public enum BinaryOperator {
       ADD,
       SUBTRACT,
       MULTIPLY,

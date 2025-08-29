@@ -31,7 +31,7 @@ public final class FunctionCall implements Expression {
 
    @Override
    public double evaluate(EvaluationContext context) {
-      Function definition = context.functions.getOrDefault(name, Builtins.get(name));
+      Function definition = context.functions().getOrDefault(name, Builtins.get(name));
 
       if (definition == null)
          throw new IllegalStateException("Unknown function: " + name);
@@ -71,7 +71,7 @@ public final class FunctionCall implements Expression {
          ArrayList<Double> values = new ArrayList<>();
 
          for (Expression expression : simplifiedArguments)
-            values.add(((Constant) expression).value);
+            values.add(((Constant) expression).value());
 
          try {
             return new Constant(definition.evaluator.apply(values));
