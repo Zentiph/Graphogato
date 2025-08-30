@@ -62,7 +62,7 @@ public final class UnaryOperation implements Expression {
       if (this == other)
          return true;
       if (other instanceof UnaryOperation unaryOperation) {
-         return this.operator.equals(unaryOperation.operator) && this.expression.equals(unaryOperation.expression);
+         return this.operator == unaryOperation.operator && this.expression.equals(unaryOperation.expression);
       }
       return false;
    }
