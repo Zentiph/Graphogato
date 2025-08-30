@@ -86,4 +86,14 @@ public final class FunctionCall implements Expression {
    public String toString() {
       return name + "(" + String.join(", ", arguments.stream().map(Object::toString).toList()) + ")";
    }
+
+   @Override
+   public boolean equals(Object other) {
+      if (this == other)
+         return true;
+      if (other instanceof FunctionCall functionCall) {
+         return this.name.equals(functionCall.name) && this.arguments.equals(functionCall.arguments);
+      }
+      return false;
+   }
 }

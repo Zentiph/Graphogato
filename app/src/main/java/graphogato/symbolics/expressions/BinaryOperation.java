@@ -138,6 +138,18 @@ public final class BinaryOperation implements Expression {
       return "(" + left + " " + operatorSymbols(operator) + " " + right + ")";
    }
 
+   @Override
+   public boolean equals(Object other) {
+      if (this == other)
+         return true;
+      if (other instanceof BinaryOperation binaryOperation) {
+         return this.operator.equals(binaryOperation.operator)
+               && this.left.equals(binaryOperation.left)
+               && this.right.equals(binaryOperation.right);
+      }
+      return false;
+   }
+
    /**
     * Get this BinaryOperation's operator.
     *

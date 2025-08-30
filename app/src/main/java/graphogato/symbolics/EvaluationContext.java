@@ -43,4 +43,15 @@ public final class EvaluationContext {
    public Map<String, Function> functions() {
       return functions;
    }
+
+   @Override
+   public boolean equals(Object other) {
+      if (this == other)
+         return true;
+      if (other instanceof EvaluationContext context) {
+         return this.variables.equals(context.variables)
+               && this.functions.equals(context.functions);
+      }
+      return false;
+   }
 }

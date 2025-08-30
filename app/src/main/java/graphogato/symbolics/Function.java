@@ -78,4 +78,15 @@ public final class Function {
    public BiFunction<List<Expression>, String, Expression> derivative() {
       return this.derivative;
    }
+
+   @Override
+   public boolean equals(Object other) {
+      if (this == other)
+         return true;
+      if (other instanceof Function function) {
+         return this.name.equals(function.name) && this.arity == function.arity
+               && this.evaluator.equals(function.evaluator) && this.derivative.equals(function.derivative);
+      }
+      return false;
+   }
 }

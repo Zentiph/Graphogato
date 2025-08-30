@@ -57,6 +57,16 @@ public final class UnaryOperation implements Expression {
       };
    }
 
+   @Override
+   public boolean equals(Object other) {
+      if (this == other)
+         return true;
+      if (other instanceof UnaryOperation unaryOperation) {
+         return this.operator.equals(unaryOperation.operator) && this.expression.equals(unaryOperation.expression);
+      }
+      return false;
+   }
+
    /**
     * Get this UnUnaryOperation's operator.
     *

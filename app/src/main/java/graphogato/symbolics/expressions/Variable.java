@@ -43,6 +43,16 @@ public final class Variable implements Expression {
       return name;
    }
 
+   @Override
+   public boolean equals(Object other) {
+      if (this == other)
+         return true;
+      if (other instanceof Variable variable) {
+         return this.name.equals(variable.name);
+      }
+      return false;
+   }
+
    /**
     * Get this variable's name.
     *

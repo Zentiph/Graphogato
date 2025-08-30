@@ -47,7 +47,7 @@ public final class Constant implements Expression {
       if (this == other)
          return true;
       if (other instanceof Constant constant) {
-         return this.value == constant.value();
+         return this.value == constant.value;
       }
       return false;
    }
