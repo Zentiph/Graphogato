@@ -12,7 +12,7 @@ Graphogato is a graphing calculator made in Java with the JavaFX framework.
 * Optimized local data storage (WIP)
 
 ## License
-See [LICENSE.md](LICENSE.md).
+This project is licensed under the MIT license. See [LICENSE](LICENSE) for more details.
 
 ## Contributing
 This project is not currently open to contributions, but please feel free to create an issue if you have found a bug and would like to report it.
